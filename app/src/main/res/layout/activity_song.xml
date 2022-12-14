@@ -15,6 +15,7 @@
         android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
+        <!-- 유튜브 영상 플레이어 -->
         <kr.co.prnd.YouTubePlayerView
             android:id="@+id/yt_song"
             android:layout_width="match_parent"

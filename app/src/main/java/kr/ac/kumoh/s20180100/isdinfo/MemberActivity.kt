@@ -14,16 +14,16 @@ import kr.ac.kumoh.s20180100.isdinfo.databinding.ActivityMemberBinding
 
 class MemberActivity : AppCompatActivity(){
     companion object {
-        const val KEY_NAME = "MemberName"
-        const val KEY_HEIGHT = "MemberHeight"
-        const val KEY_BIRTH = "MemberBirth"
-        const val KEY_MBTI = "MemberMBTI"
-        const val KEY_YT_LINK = "MemberYoutubeLink"
-        const val KEY_TW_LINK = "MemberTwitchLink"
-        const val KEY_DESCRIPTION = "MemberDescription"
-        const val KEY_IMAGE = "MemberImage"
-        const val KEY_FAN_NAME = "MemberFanName"
-        const val KEY_FAN_DESCRIPTION = "MemberFanDescription"
+        const val KEY_NAME = "MemberName" // 멤버 이름
+        const val KEY_HEIGHT = "MemberHeight" // 멤버 키
+        const val KEY_BIRTH = "MemberBirth" // 멤버 생일
+        const val KEY_MBTI = "MemberMBTI" // 멤버 MBTI
+        const val KEY_YT_LINK = "MemberYoutubeLink" // 멤버 유튜브 링크
+        const val KEY_TW_LINK = "MemberTwitchLink" // 멤버 트위치 링크
+        const val KEY_DESCRIPTION = "MemberDescription" // 멤버 설명
+        const val KEY_IMAGE = "MemberImage" // 멤버 이미지
+        const val KEY_FAN_NAME = "MemberFanName" // 멤버 팬덤 이름
+        const val KEY_FAN_DESCRIPTION = "MemberFanDescription" // 멤버 팬덤 설명
     }
 
     private lateinit var binding: ActivityMemberBinding
@@ -34,6 +34,7 @@ class MemberActivity : AppCompatActivity(){
         binding = ActivityMemberBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 이미지 로더 => 캐시 설정
         imageLoader = ImageLoader(Volley.newRequestQueue(this),
             object : ImageLoader.ImageCache {
                 private val cache = LruCache<String, Bitmap>(20)
@@ -46,6 +47,7 @@ class MemberActivity : AppCompatActivity(){
             }
         )
 
+        // 전달된 데이터 저장
         binding.textName.text = intent.getStringExtra(KEY_NAME)
         binding.textHeight.text = intent.getStringExtra(KEY_HEIGHT)
         binding.textBirth.text = intent.getStringExtra(KEY_BIRTH)
@@ -58,6 +60,9 @@ class MemberActivity : AppCompatActivity(){
 
         val ytLink = intent.getStringExtra(KEY_YT_LINK)
         val twLink = intent.getStringExtra(KEY_TW_LINK)
+
+        // 유튜브 및 트위치 버튼 클릭시 이벤트 리스터
+        // 해당 링크로 이동
         binding.btnYoutube.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(ytLink))
             startActivity(intent)
@@ -67,8 +72,11 @@ class MemberActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
+        // 상단 액션 바 배경 색과 텍스트 설정
         supportActionBar?.setBackgroundDrawable(ColorDrawable(0xFFDDA0DD.toInt()))
         supportActionBar?.title = binding.textName.text
+
+        // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

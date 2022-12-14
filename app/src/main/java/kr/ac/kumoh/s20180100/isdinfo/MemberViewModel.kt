@@ -38,6 +38,7 @@ class MemberViewModel(application: Application) : AndroidViewModel(application) 
     val imageLoader: ImageLoader
 
     init {
+        // 리스트, 큐, 이미지로더 초기화
         _list.value = members
         queue = Volley.newRequestQueue(getApplication())
         imageLoader = ImageLoader(queue,
@@ -53,6 +54,7 @@ class MemberViewModel(application: Application) : AndroidViewModel(application) 
         )
     }
 
+    /** 서버에서 가져온 이미지 주소 반환 */
     fun getImageUrl(i: Int): String = "$SERVER_URL/image/" + URLEncoder.encode(members[i].image, "utf-8")
 
     fun requestMember(){
@@ -62,19 +64,23 @@ class MemberViewModel(application: Application) : AndroidViewModel(application) 
             null,
             {
                 //Toast.makeText(getApplication(), it.toString(), Toast.LENGTH_LONG).show()
+                // 서버와 통신이 성공하면 리스트에 저장
                 members.clear()
                 parseJson(it)
                 _list.value = members
             },
             {
+                // 서버와 통신이 실패하면 Toast로 오류 메시지 출력
                 Toast.makeText(getApplication(), it.toString(), Toast.LENGTH_LONG).show()
             }
         )
 
+        // 큐에 request 저장
         request.tag = QUEUE_TAG
         queue.add(request)
     }
 
+    /** JSON 배열에서 아이템을 추출하여 저장 */
     private fun parseJson(items: JSONArray){
         for(i in 0 until items.length()){
             val item:JSONObject = items[i] as JSONObject

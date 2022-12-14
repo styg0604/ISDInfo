@@ -16,6 +16,7 @@ import com.android.volley.toolbox.NetworkImageView
 class SongFragment : Fragment() {
     private lateinit var songModel: SongViewModel
 
+    // 레이아웃 매니저 및 어댑터 전역변수 선언
     private var linearLayoutManager: RecyclerView.LayoutManager? = null
     private var songAdapter: RecyclerView.Adapter<SongAdapter.ViewHolder>? = null
 
@@ -38,17 +39,20 @@ class SongFragment : Fragment() {
         inner class ViewHolder(itemView: View)
             : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
+            // RecyclerView에 ViewHolder 설정
             val txTitle: TextView = itemView.findViewById(R.id.text1)
             val txType: TextView = itemView.findViewById(R.id.text2)
-
             val niImage: NetworkImageView = itemView.findViewById(R.id.image)
 
             init {
+                // 기본 이미지 설정
                 niImage.setDefaultImageResId(android.R.drawable.ic_menu_report_image)
+                // 클릭 이벤트 리스터 초기화
                 itemView.setOnClickListener(this)
             }
 
             override fun onClick(p0: View?) {
+                // 아이템 클릭 시 MemberActicity로 데이터 전달 및 이동
                 val intent = Intent(context, SongActivity::class.java)
                 intent.putExtra(SongActivity.KEY_TITLE,
                     songModel.list.value?.get(adapterPosition)?.title)
@@ -90,12 +94,17 @@ class SongFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+        // 레이아웃 연결
         val view = inflater.inflate(R.layout.fragment_song, container, false)
+
+        // RecyclerView를 변수에 저장
         val recyclerView: RecyclerView = view.findViewById(R.id.song_list)
 
+        // 어댑터 및 레이아웃 매니저 초기화
         songAdapter = SongAdapter()
         linearLayoutManager = LinearLayoutManager(activity)
 
+        // RecyclerView 설정
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = songAdapter
         recyclerView.itemAnimator = DefaultItemAnimator()
